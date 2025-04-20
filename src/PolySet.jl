@@ -6,4 +6,6 @@ module PolySet
 
     include("structure.jl")
     include("evaluate.jl")
+    include("integrate.jl")
+    include("derivate.jl")
 end
