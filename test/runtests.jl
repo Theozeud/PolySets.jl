@@ -2,5 +2,7 @@ using PolySet
 using Test
 
 @testset "PolySet.jl" begin
-    # Write your tests here.
+    
+    p = Legendre(10)
+    evaluate(p, 2)
 end

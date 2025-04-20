@@ -56,9 +56,6 @@ Base.iterate(p::PolysSet, state...) = iterate(eachrow(p.coeffs), state...)
 Base.iterate(p::PolysSet) = iterate(p.coeffs)
 Base.iterate(p::PolysSet, state) = iterate(p.coeffs, state)
 
-# Display
-Base.show(io::IO, p::PolysSet) = show(io, p.coeffs)
-
 # Copy
 Base.copy(p::PolysSet) = PolysSet(copy(p.coeffs))
 
