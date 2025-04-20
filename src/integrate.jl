@@ -91,6 +91,33 @@ function integrate!(y::AbstractVecOrMat, ps::PolySet{TPS}, a::Real, b::Real, cac
 end
 
 
+
+"""
+    integrate(ps::PolySet{TPS}, a::Real) where TPS
+
+Computes the indefinite integral of each polynomial in the `PolySet` `ps`, evaluated to be zero at `x = a`.
+
+# Arguments
+- `ps::PolySet{TPS}`: A set of polynomials represented as a `PolySet` with scalar type `TPS`.
+- `a::Real`: The point at which the antiderivative is set to zero. 
+
+# Returns
+- `ips::PolySet`: Contains the integrated polynomials.
+
+# Example
+```julia
+ps = PolySet([[1.0, 2.0], [0.0, 3.0]])             
+ips = allocate_polyset(Float64, 2, 3)               
+integrate(ps, 0.0)                                         
+```
+"""
+function integrate(ps::PolySet{TPS}, a::Real) where TPS
+    ips = similar(ps, (npolys(ps),maxdeg(ps)+2))
+    integrate!(ips, ps, a)
+    ips
+end
+
+
 """
     integrate!(ips::PolySet, ps::PolySet{TPS}, a::Real) where TPS
 
