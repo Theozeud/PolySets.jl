@@ -11,7 +11,7 @@ Evaluates a set of polynomials represented by `ps` at the scalar point `x`.
 - Uses Horner's method for efficient polynomial evaluation.
 """
 function evaluate(ps::PolysSet, x::Number)
-    NewT = promote(typeof(x), eltype(ps))
+    NewT = promote_type(typeof(x), eltype(ps))
     y = zeros(NewT, size(ps,1))
     evaluate!(y, ps, x)
 end
@@ -31,7 +31,7 @@ Evaluates a set of polynomials represented by `ps` at the scalar point `x`.
 - Uses Horner's method for efficient polynomial evaluation.
 """
 function evaluate(ps::PolysSet, x::AbstractVector)
-    NewT = promote(typeof(x), eltype(ps))
+    NewT = promote_type(typeof(x), eltype(ps))
     y = zeros(NewT, size(ps,1), length(x))
     evaluate!(y, ps, x)
 end

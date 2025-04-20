@@ -55,7 +55,7 @@ const LEGENDRE_COEFFS = [1//1 0//1 0//1;
 function Legendre(n::Int, ::Type{T}) where {T}
     if n ≤ LEGENDRE_DEGMAX_STORED
         @views polys = T.(LEGENDRE_COEFFS[1:n+1,1:n+1])
-        return PolySet(polys)
+        return PolysSet(polys)
     else
         polys = zeros(T,n+1,n+1)
         @views vpolys = polys[1:LEGENDRE_DEGMAX_STORED+1,1:LEGENDRE_DEGMAX_STORED+1]
@@ -66,7 +66,7 @@ function Legendre(n::Int, ::Type{T}) where {T}
             @views polys[m+1,2:m+1]  .= (2*m-1)//m .*  Pₘ₋₁ 
             @views polys[m+1,1:m-1] .-= (m - 1)//m .* Pₘ₋₂
         end
-        return PolySet(polys)
+        return PolysSet(polys)
     end
 end
 
@@ -74,14 +74,14 @@ end
 """
     IntLegendre(n::Int, ::Type{T}) where {T}
 
-Returns the set of indefinite integrals of Legendre polynomials of degrees 0 to `n`, evaluated so that they vanish at `x = -1`. The result is returned as a `PolySet` with coefficients of type `T`.
+Returns the set of indefinite integrals of Legendre polynomials of degrees 0 to `n`, evaluated so that they vanish at `x = -1`. The result is returned as a `PolysSet` with coefficients of type `T`.
 
 # Arguments
 - `n::Int`: The maximum degree of Legendre polynomials to integrate.
 - `T`: The desired scalar type for the coefficients (e.g., `Float64`, `Double64`, etc.).
 
 # Returns
-- `PolySet`: A `PolySet` containing the integrals..
+- `PolysSet`: A `PolysSet` containing the integrals..
 
 # Details
 If `n` is small enough (i.e., `n ≤ INTLEGENDRE_DEGMAX_STORED`), the result is retrieved from a precomputed table of rational coefficients for improved performance and precision.
@@ -89,7 +89,7 @@ If `n` is small enough (i.e., `n ≤ INTLEGENDRE_DEGMAX_STORED`), the result is 
 # Example
 ```julia
 julia> ps = IntLegendre(3, Float64)
-PolySet with 4 polynomials of max degree 4
+PolysSet with 4 polynomials of max degree 4
 ```
 """
 IntLegendre(n::Int) = IntLegendre(n, Float64)
@@ -102,7 +102,7 @@ const INTLEGENDRE_COEFFS = [1//1    1//1    0//1;
 function IntLegendre(n::Int, ::Type{T}) where {T}
     if n ≤ INTLEGENDRE_DEGMAX_STORED
         @views polys = T.(INTLEGENDRE_COEFFS[1:n+1,1:n+2])
-        return PolySet(polys)
+        return PolysSet(polys)
     else
         polys = zeros(T,n+1,n+2)
         @views vpolys = polys[1:INTLEGENDRE_DEGMAX_STORED+1,1:INTLEGENDRE_DEGMAX_STORED+2]
@@ -110,7 +110,7 @@ function IntLegendre(n::Int, ::Type{T}) where {T}
         legendre = Legendre(n, Rational{Int64})
         @views vpolys = polys[INTLEGENDRE_DEGMAX_STORED+2:end,:]
         @views vlegendre = legendre.coeffs[INTLEGENDRE_DEGMAX_STORED+2:end,:]
-        integrate!(PolySet(vpolys), PolySet(vlegendre), -1)
-        return PolySet(polys)
+        integrate!(PolysSet(vpolys), PolysSet(vlegendre), -1)
+        return PolysSet(polys)
     end
 end
