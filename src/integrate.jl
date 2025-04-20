@@ -142,6 +142,7 @@ integrate!(ips, ps, 0.0)
 """
 function integrate!(ips::PolySet, ps::PolySet{TPS}, a::Real) where TPS
     x = 1 ./(1:(maxdeg(ps)+1))
+    fill!(ips, 0)
     @views vips = ips.coeffs[:,2:maxdeg(ps)+2]
     mul!(vips, ps.coeffs, Diagonal(x))
     NewT = promote_type(TPS, typeof(a))
