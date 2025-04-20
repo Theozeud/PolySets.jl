@@ -16,6 +16,7 @@ function evaluate(ps::PolysSet, x::Number)
     evaluate!(y, ps, x)
 end
 
+(ps::PolysSet)(x::Number) = evaluate(ps, x)
 
 """
     evaluate(ps::PolysSet, x::Number)
@@ -35,6 +36,7 @@ function evaluate(ps::PolysSet, x::AbstractVector)
     evaluate!(y, ps, x)
 end
 
+(ps::PolysSet)(x::AbstractVector) = evaluate(ps, x)
 
 """
     evaluate!(y::AbstractVector, ps::PolysSet, x::Number)
