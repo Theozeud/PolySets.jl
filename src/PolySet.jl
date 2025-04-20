@@ -8,4 +8,5 @@ module PolySet
     include("evaluate.jl")
     include("integrate.jl")
     include("derivate.jl")
+    include("basis.jl")
 end
