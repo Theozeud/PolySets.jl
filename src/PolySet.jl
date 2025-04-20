@@ -4,5 +4,6 @@ module PolySet
     using SparseArrays
     using UnPack
 
-
+    include("structure.jl")
+    include("evaluate.jl")
 end
