@@ -7,7 +7,7 @@
 
 **PolySet.jl** is a Julia package for efficient and vectorized manipulation of univariate polynomial sets.
 
-## ✨ Motivation
+## Motivation
 
 When working with a large number of univariate polynomials, it is often desirable to avoid iterative, coefficient-by-coefficient manipulations. `PolySet.jl` is designed to provide a fast and structured way to store and operate on collections of polynomials using array-based representations.
 
@@ -18,7 +18,7 @@ The core idea is to store multiple polynomials in a single 2D matrix, where:
 
 This structure is particularly well-suited for numerical applications, symbolic prototyping, and situations where many polynomials are manipulated simultaneously.
 
-## ⚙️ Features
+## Features
 
 - Compact storage of univariate polynomials
 - Fast vectorized evaluation using Horner's method
