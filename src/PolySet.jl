@@ -3,6 +3,7 @@ module PolySet
     using LinearAlgebra
     using SparseArrays
     using UnPack
+    using Plots
 
     export  PolysSet, 
             allocate_PolysSet, npolys, maxdeg,
@@ -17,4 +18,7 @@ module PolySet
 
     export Monomials, Legendre, IntLegendre
     include("basis.jl")
+
+    export plot, plot!
+    include("plot.jl")
 end
