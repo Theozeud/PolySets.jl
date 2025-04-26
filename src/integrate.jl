@@ -138,11 +138,11 @@ polynomials as `ps` and one more degree.
 ps = PolysSet([[1.0, 2.0], [0.0, 3.0]])             
 ips = allocate_PolysSet(Float64, 2, 3)               
 integrate!(ips, ps, 0.0)                                         
-```
+``` ]
 """
 function integrate!(ips::PolysSet, ps::PolysSet{TPS}, a::Real) where TPS
     x = 1 ./(1:(maxdeg(ps)+1))
-    fill!(ips, 0)
+    fill!(ips.coeffs, 0)
     @views vips = ips.coeffs[:,2:maxdeg(ps)+2]
     mul!(vips, ps.coeffs, Diagonal(x))
     NewT = promote_type(TPS, typeof(a))
