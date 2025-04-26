@@ -22,8 +22,8 @@ The matrix `ips.coeffs` must have the same number of rows as `ps`, and at least 
 """
 function derivate!(ips::PolysSet, ps::PolysSet)
     fill!(ips.coeffs, 0)
-    @views vips = ips.coeffs[:,1:maxdeg(p)]
-    vips .= ps[:,2:end] 
+    @views vips = ips.coeffs[:,1:maxdeg(ps)]
+    vips .= ps.coeffs[:,2:end] 
     x = 1:maxdeg(ps)
-    vips = vips .* x'
+    vips .= vips .* x'
 end
