@@ -21,9 +21,9 @@ PolysSet{Int64, Matrix{Int64}}([1 2 3; 0 1 0])
 
 ``` 
 """
-struct PolysSet{T, typeData<:AbstractMatrix}
+struct PolysSet{T, typeData<:AbstractVecOrMat}
     coeffs::typeData
-    function PolysSet(polys::AbstractMatrix)
+    function PolysSet(polys::AbstractVecOrMat)
         new{eltype(polys), typeof(polys)}(polys)
     end
 end
