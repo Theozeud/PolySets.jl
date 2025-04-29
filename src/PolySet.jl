@@ -1,11 +1,11 @@
-module PolySet
+module PolySets
 
     using LinearAlgebra
     using SparseArrays
     using UnPack
     using Plots
 
-    export  PolysSet, 
+    export  PolySet, 
             allocate_PolysSet, npolys, maxdeg,
             evaluate, evaluate!,
             integrate, integrate!,

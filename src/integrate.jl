@@ -1,16 +1,16 @@
 """
-    integrate(ps::PolysSet{TPS}, a::Real, b::Real) where TPS
+    integrate(ps::PolySet{TPS}, a::Real, b::Real) where TPS
 
-Evaluate the definite integral of each polynomial in the `PolysSet` `ps` over the interval [`a`, `b`]. 
+Evaluate the definite integral of each polynomial in the `PolySet` `ps` over the interval [`a`, `b`]. 
 
 The result `y[i]` is the integral of the `i`-th polynomial from `a` to `b`.
 
 # Arguments
-- `ps`: A `PolysSet` structure containing the coefficient matrix.
+- `ps`: A `PolySet` structure containing the coefficient matrix.
 - `a`, `b`: Integration bounds.
 """
 
-function integrate(ps::PolysSet{TPS}, a::Real, b::Real) where {TPS}
+function integrate(ps::PolySet{TPS}, a::Real, b::Real) where {TPS}
     NewT = promote_type(TPS, typeof(a), typeof(b))
     y = zeros(NewT, npolys(ps))
     integrate!(y, ps, a, b)
@@ -19,9 +19,9 @@ end
 
 
 """
-    integrate!(y::AbstractVector, ps::PolysSet{TPS}, a::Real, b::Real) where TPS
+    integrate!(y::AbstractVector, ps::PolySet{TPS}, a::Real, b::Real) where TPS
 
-Evaluate the definite integral of each polynomial in the `PolysSet` `ps` over the interval [`a`, `b`],
+Evaluate the definite integral of each polynomial in the `PolySet` `ps` over the interval [`a`, `b`],
 and store the result in the output vector `y`. 
 
 The result `y[i]` is the integral of the `i`-th polynomial from `a` to `b`.
@@ -30,10 +30,10 @@ This version allocates a temporary vector internally.
 
 # Arguments
 - `y`: Output vector, must have length equal to the number of polynomials in `ps`.
-- `ps`: A `PolysSet` structure containing the coefficient matrix.
+- `ps`: A `PolySet` structure containing the coefficient matrix.
 - `a`, `b`: Integration bounds.
 """
-function integrate!(y::AbstractVecOrMat, ps::PolysSet{TPS}, a::Real, b::Real) where TPS
+function integrate!(y::AbstractVecOrMat, ps::PolySet{TPS}, a::Real, b::Real) where TPS
     @unpack coeffs = ps
     (_,m) = size(ps)
     newT = promote_type(TPS, typeof(a), typeof(b))
@@ -49,18 +49,18 @@ end
 
 
 """
-    integrate!(y::AbstractVector, ps::PolysSet{TPS}, a::Real, b::Real, cache::AbstractVector) where TPS
+    integrate!(y::AbstractVector, ps::PolySet{TPS}, a::Real, b::Real, cache::AbstractVector) where TPS
 
 Same as `integrate!(y, ps, a, b)` but avoids allocation by reusing the provided `cache` vector.
 
 # Arguments
 - `y`: Output vector, must have length equal to the number of polynomials in `ps`.
-- `ps`: A `PolysSet` structure containing the coefficient matrix.
+- `ps`: A `PolySet` structure containing the coefficient matrix.
 - `a`, `b`: Integration bounds.
 - `cache`: Pre-allocated vector of length equal to the polynomial degree, used to store powers.
 
 """
-function integrate!(y::AbstractVecOrMat, ps::PolysSet{TPS}, a::Real, b::Real, cache::AbstractVector) where TPS
+function integrate!(y::AbstractVecOrMat, ps::PolySet{TPS}, a::Real, b::Real, cache::AbstractVector) where TPS
     @unpack coeffs = ps
     (_,m) = size(ps)
     newT = promote_type(TPS, typeof(a), typeof(b))
@@ -93,25 +93,25 @@ end
 
 
 """
-    integrate(ps::PolysSet{TPS}, a::Real) where TPS
+    integrate(ps::PolySet{TPS}, a::Real) where TPS
 
-Computes the indefinite integral of each polynomial in the `PolysSet` `ps`, evaluated to be zero at `x = a`.
+Computes the indefinite integral of each polynomial in the `PolySet` `ps`, evaluated to be zero at `x = a`.
 
 # Arguments
-- `ps::PolysSet{TPS}`: A set of polynomials represented as a `PolysSet` with scalar type `TPS`.
+- `ps::PolySet{TPS}`: A set of polynomials represented as a `PolySet` with scalar type `TPS`.
 - `a::Real`: The point at which the antiderivative is set to zero. 
 
 # Returns
-- `ips::PolysSet`: Contains the integrated polynomials.
+- `ips::PolySet`: Contains the integrated polynomials.
 
 # Example
 ```julia
-ps = PolysSet([[1.0, 2.0], [0.0, 3.0]])             
-ips = allocate_PolysSet(Float64, 2, 3)               
+ps = PolySet([[1.0, 2.0], [0.0, 3.0]])             
+ips = allocate_PolySet(Float64, 2, 3)               
 integrate(ps, 0.0)                                         
 ```
 """
-function integrate(ps::PolysSet{TPS}, a::Real) where TPS
+function integrate(ps::PolySet{TPS}, a::Real) where TPS
     ips = similar(ps, (npolys(ps),maxdeg(ps)+2))
     integrate!(ips, ps, a)
     ips
@@ -119,28 +119,28 @@ end
 
 
 """
-    integrate!(ips::PolysSet, ps::PolysSet{TPS}, a::Real) where TPS
+    integrate!(ips::PolySet, ps::PolySet{TPS}, a::Real) where TPS
 
-Computes the indefinite integral of each polynomial in the `PolysSet` `ps`, evaluated to be zero at `x = a`, 
+Computes the indefinite integral of each polynomial in the `PolySet` `ps`, evaluated to be zero at `x = a`, 
 and stores the result in `ips`.
 
 # Arguments
-- `ips::PolysSet`: A preallocated `PolysSet` where the result will be stored. It must have the same number of 
+- `ips::PolySet`: A preallocated `PolySet` where the result will be stored. It must have the same number of 
 polynomials as `ps` and one more degree.
-- `ps::PolysSet{TPS}`: A set of polynomials represented as a `PolysSet` with scalar type `TPS`.
+- `ps::PolySet{TPS}`: A set of polynomials represented as a `PolySet` with scalar type `TPS`.
 - `a::Real`: The point at which the antiderivative is set to zero. 
 
 # Returns
-- `ips::PolysSet`: The modified `ips`, containing the integrated polynomials.
+- `ips::PolySet`: The modified `ips`, containing the integrated polynomials.
 
 # Example
 ```julia
-ps = PolysSet([[1.0, 2.0], [0.0, 3.0]])             
-ips = allocate_PolysSet(Float64, 2, 3)               
+ps = PolySet([[1.0, 2.0], [0.0, 3.0]])             
+ips = allocate_PolySet(Float64, 2, 3)               
 integrate!(ips, ps, 0.0)                                         
 ``` ]
 """
-function integrate!(ips::PolysSet, ps::PolysSet{TPS}, a::Real) where TPS
+function integrate!(ips::PolySet, ps::PolySet{TPS}, a::Real) where TPS
     x = 1 ./(1:(maxdeg(ps)+1))
     fill!(ips.coeffs, 0)
     @views vips = ips.coeffs[:,2:maxdeg(ps)+2]

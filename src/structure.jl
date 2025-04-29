@@ -1,5 +1,5 @@
 """
-    PolysSet{T, typeData<:AbstractMatrix}
+    PolySet{T, typeData<:AbstractMatrix}
 
 A structure for efficient, vectorized manipulation of multiple polynomials.
 
@@ -7,7 +7,7 @@ A structure for efficient, vectorized manipulation of multiple polynomials.
 - `coeffs::typeData`: a matrix of polynomial coefficients. Each row corresponds to a single polynomial, with coefficients ordered from lowest to highest degree.
 
 # Constructor
-- `PolysSet(polys::AbstractMatrix)`: constructs a `PolysSet` from a matrix `polys`, where each row is interpreted as a polynomial. The type parameter `T` is inferred as the element type of the matrix, and `typeData` is the concrete matrix type (e.g., `Matrix{Float64}`, `SMatrix`, etc.).
+- `PolySet(polys::AbstractMatrix)`: constructs a `PolySet` from a matrix `polys`, where each row is interpreted as a polynomial. The type parameter `T` is inferred as the element type of the matrix, and `typeData` is the concrete matrix type (e.g., `Matrix{Float64}`, `SMatrix`, etc.).
 
 # Examples
 ```julia
@@ -16,77 +16,77 @@ julia> A = [1 2 3; 0 1 0]
  1  2  3
  0  1  0
 
-julia> ps = PolysSet(A)
-PolysSet{Int64, Matrix{Int64}}([1 2 3; 0 1 0])
+julia> ps = PolySet(A)
+PolySet{Int64, Matrix{Int64}}([1 2 3; 0 1 0])
 
 ``` 
 """
-struct PolysSet{T, typeData<:AbstractVecOrMat}
+struct PolySet{T, typeData<:AbstractVecOrMat}
     coeffs::typeData
-    function PolysSet(polys::AbstractVecOrMat)
+    function PolySet(polys::AbstractVecOrMat)
         new{eltype(polys), typeof(polys)}(polys)
     end
 end
 
 
 # Type element
-Base.eltype(p::PolysSet) = eltype(p.coeffs)
+Base.eltype(p::PolySet) = eltype(p.coeffs)
 
 # Indexing
-Base.getindex(p::PolysSet, i::Int, j::Int) = p.coeffs[i, j]
-Base.getindex(p::PolysSet, i::Int) = p.coeffs[i, :]
-Base.setindex!(p::PolysSet, v, i::Int, j::Int) = (p.coeffs[i, j] = v)
-Base.setindex!(p::PolysSet, v::AbstractVector, i::Int) = (p.coeffs[i, :] = v)
-Base.first(ps::PolysSet) = ps[1, :]
-Base.last(ps::PolysSet) = ps[end, :]
-Base.firstindex(ps::PolysSet) = firstindex(ps.coeffs)
-Base.lastindex(ps::PolysSet) = lastindex(ps.coeffs)
+Base.getindex(p::PolySet, i::Int, j::Int) = p.coeffs[i, j]
+Base.getindex(p::PolySet, i::Int) = p.coeffs[i, :]
+Base.setindex!(p::PolySet, v, i::Int, j::Int) = (p.coeffs[i, j] = v)
+Base.setindex!(p::PolySet, v::AbstractVector, i::Int) = (p.coeffs[i, :] = v)
+Base.first(ps::PolySet) = ps[1, :]
+Base.last(ps::PolySet) = ps[end, :]
+Base.firstindex(ps::PolySet) = firstindex(ps.coeffs)
+Base.lastindex(ps::PolySet) = lastindex(ps.coeffs)
 
 
 # Size
-Base.size(p::PolysSet) = size(p.coeffs)
-Base.size(p::PolysSet, dim::Int) = size(p.coeffs, dim)
-Base.length(ps::PolysSet) = size(ps, 1)
-npolys(ps::PolysSet) = size(ps.coeffs, 1)
-maxdeg(ps::PolysSet) = size(ps.coeffs, 2) - 1
+Base.size(p::PolySet) = size(p.coeffs)
+Base.size(p::PolySet, dim::Int) = size(p.coeffs, dim)
+Base.length(ps::PolySet) = size(ps, 1)
+npolys(ps::PolySet) = size(ps.coeffs, 1)
+maxdeg(ps::PolySet) = size(ps.coeffs, 2) - 1
 
 # Iteration
-Base.iterate(p::PolysSet, state...) = iterate(eachrow(p.coeffs), state...)
-Base.iterate(p::PolysSet) = iterate(p.coeffs)
-Base.iterate(p::PolysSet, state) = iterate(p.coeffs, state)
+Base.iterate(p::PolySet, state...) = iterate(eachrow(p.coeffs), state...)
+Base.iterate(p::PolySet) = iterate(p.coeffs)
+Base.iterate(p::PolySet, state) = iterate(p.coeffs, state)
 
 # Copy
-Base.copy(p::PolysSet) = PolysSet(copy(p.coeffs))
+Base.copy(p::PolySet) = PolySet(copy(p.coeffs))
 
 # Similar and zeros
-Base.similar(p::PolysSet) = PolysSet(similar(p.coeffs))
-Base.similar(p::PolysSet, ::Type{T}) where T = PolysSet(similar(p.coeffs, T))
-Base.similar(p::PolysSet, dims::Dims) = PolysSet(similar(p.coeffs, dims))
-Base.similar(p::PolysSet, ::Type{T}, dims::Dims) where T = PolysSet(similar(p.coeffs, T, dims))
+Base.similar(p::PolySet) = PolySet(similar(p.coeffs))
+Base.similar(p::PolySet, ::Type{T}) where T = PolySet(similar(p.coeffs, T))
+Base.similar(p::PolySet, dims::Dims) = PolySet(similar(p.coeffs, dims))
+Base.similar(p::PolySet, ::Type{T}, dims::Dims) where T = PolySet(similar(p.coeffs, T, dims))
 
-Base.zeros(::Type{PolysSet{T}}, dims::Dims) where {T} = PolysSet(zeros(T, dims))
-Base.zeros(p::PolysSet) = PolysSet(zeros(eltype(p), size(p)))
+Base.zeros(::Type{PolySet{T}}, dims::Dims) where {T} = PolySet(zeros(T, dims))
+Base.zeros(p::PolySet) = PolySet(zeros(eltype(p), size(p)))
 
 # Convert and promote
-Base.convert(::Type{PolysSet{T}}, A::AbstractMatrix{T}) where {T} = PolysSet{T, typeof(A)}(A)
-Base.promote_rule(::Type{PolysSet{T}}, ::Type{PolysSet{S}}) where {T, S} = PolysSet{promote_type(T, S)}
+Base.convert(::Type{PolySet{T}}, A::AbstractMatrix{T}) where {T} = PolySet{T, typeof(A)}(A)
+Base.promote_rule(::Type{PolySet{T}}, ::Type{PolySet{S}}) where {T, S} = PolySet{promote_type(T, S)}
 
 # Equality
-Base.:(==)(p1::PolysSet, p2::PolysSet) = p1.coeffs == p2.coeffs
-Base.:(!=)(p1::PolysSet, p2::PolysSet) = !(p1 == p2)
+Base.:(==)(p1::PolySet, p2::PolySet) = p1.coeffs == p2.coeffs
+Base.:(!=)(p1::PolySet, p2::PolySet) = !(p1 == p2)
 
 # Display
-function Base.show(io::IO, ::MIME"text/plain", ps::PolysSet)
+function Base.show(io::IO, ::MIME"text/plain", ps::PolySet)
     n, degmax_plus1 = size(ps.coeffs)
-    println(io, "PolysSet with $n polynomials (degmax = $(degmax_plus1 - 1))")
+    println(io, "PolySet with $n polynomials (degmax = $(degmax_plus1 - 1))")
     show(io, MIME"text/plain"(), ps.coeffs)
 end
 
 
 """
-    allocate_PolysSet(T::DataType, nbpoly::Int, degmax::Int)
+    allocate_PolySet(T::DataType, nbpoly::Int, degmax::Int)
 
-Create a`PolysSet` of `nbpoly` polynomials, each of degree at most `degmax` and whose 
+Create a`PolySet` of `nbpoly` polynomials, each of degree at most `degmax` and whose 
 coefficient matrix is filled with zeros.
 
 # Arguments
@@ -95,9 +95,9 @@ coefficient matrix is filled with zeros.
 - `degmax::Int`: the maximum degree of each polynomial.
 
 # Returns
-- A `PolysSet{T}` initialized with zero coefficients.
+- A `PolySet{T}` initialized with zero coefficients.
 """
-allocate_PolysSet(T::DataType, nbpoly::Int, degmax::Int) = PolysSet(zeros(T,nbpoly, degmax+1))
+allocate_PolySet(T::DataType, nbpoly::Int, degmax::Int) = PolySet(zeros(T,nbpoly, degmax+1))
 
 
 

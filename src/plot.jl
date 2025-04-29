@@ -1,4 +1,4 @@
-function Plots.plot(ps::PolysSet; 
+function Plots.plot(ps::PolySet; 
                     xlim=(-1.0, 1.0), 
                     npoints=200, 
                     labels=:auto, 
@@ -15,7 +15,7 @@ function Plots.plot(ps::PolysSet;
 end
 
 
-function Plots.plot!(plt, ps::PolysSet; xlim=(-1.0, 1.0), npoints=200, labels=:auto, kwargs...)
+function Plots.plot!(plt, ps::PolySet; xlim=(-1.0, 1.0), npoints=200, labels=:auto, kwargs...)
     x = range(xlim[1], xlim[2]; length=npoints)
     y = evaluate(ps, x)
     for i in 1:npolys(ps)
