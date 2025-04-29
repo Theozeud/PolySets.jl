@@ -1,4 +1,4 @@
-using PolySet
+using PolySets
 using Test
 
 include("integrate.jl")
