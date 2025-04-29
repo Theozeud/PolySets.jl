@@ -29,7 +29,6 @@ struct PolysSet{T, typeData<:AbstractVecOrMat}
 end
 
 
-
 # Type element
 Base.eltype(p::PolysSet) = eltype(p.coeffs)
 
@@ -76,6 +75,12 @@ Base.promote_rule(::Type{PolysSet{T}}, ::Type{PolysSet{S}}) where {T, S} = Polys
 Base.:(==)(p1::PolysSet, p2::PolysSet) = p1.coeffs == p2.coeffs
 Base.:(!=)(p1::PolysSet, p2::PolysSet) = !(p1 == p2)
 
+# Display
+function Base.show(io::IO, ::MIME"text/plain", ps::PolysSet)
+    n, degmax_plus1 = size(ps.coeffs)
+    println(io, "PolysSet with $n polynomials (degmax = $(degmax_plus1 - 1))")
+    show(io, MIME"text/plain"(), ps.coeffs)
+end
 
 
 """
@@ -97,17 +102,3 @@ allocate_PolysSet(T::DataType, nbpoly::Int, degmax::Int) = PolysSet(zeros(T,nbpo
 
 
 
-function SparseArrays.sparse(ps::PolysSet)
-    sparseps = sparse(ps.coeffs)
-    PolysSet(sparseps)
-end
-
-
-
-
-
-function Base.show(io::IO, ::MIME"text/plain", ps::PolysSet)
-    n, degmax_plus1 = size(ps.coeffs)
-    println(io, "PolysSet with $n polynomials (degmax = $(degmax_plus1 - 1))")
-    show(io, MIME"text/plain"(), ps.coeffs)
-end
