@@ -16,13 +16,13 @@ The core idea is to store multiple polynomials in a single 2D matrix, where:
 - each **column** holds the coefficient for a given degree (in increasing order),
 - and operations such as evaluation, differentiation, integration, or addition are performed in a fully vectorized way.
 
-This structure is particularly well-suited for numerical applications, symbolic prototyping, and situations where many polynomials are manipulated simultaneously.
+This structure is particularly well-suited for numerical applications where many polynomials are manipulated simultaneously.
 
 ## Features
 
 - Compact storage of univariate polynomials
 - Fast vectorized evaluation using Horner's method
-- Vectorized differentiation
-- Support for polynomial basis generation (e.g. monomials)
+- Vectorized operations (derivation, integration)
+- Support for polynomial basis generation (e.g. monomials, Legendre, IntLegendre)
 - Interoperable with standard Julia arrays
 - Compatible with GPU acceleration (planned)
