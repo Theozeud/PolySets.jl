@@ -26,3 +26,29 @@ This structure is particularly well-suited for numerical applications where many
 - Support for polynomial basis generation (e.g. monomials, Legendre, IntLegendre)
 - Interoperable with standard Julia arrays
 - Compatible with GPU acceleration (planned)
+
+
+## How to use `PolySet`
+
+Here's a quick example showing how to create a set of 1000 polynomials of degree 999 and evaluate them on 1000 points:
+
+```julia
+using YourPolyPackage  # Replace with the actual package name
+using BenchmarkTools
+using Plots
+
+# Generate a PolySet of size 1000 × 1000 (1000 polynomials of degree 999)
+n_polys = 1000
+degree = 999
+ps = PolySet(randn(n_polys, degree + 1))  # Random coefficients
+
+# Generate 1000 evaluation points in [-1, 1]
+x = range(-1.0, 1.0; length=n_polys)
+
+# Evaluate all polynomials at all points (vectorized broadcasting)
+@btime y = ps.(x)  # Returns a (1000, 1000) matrix
+
+# Plot a few polynomials
+plot(x, ps[1:5].(x)', legend=false, title="First 5 polynomials")
+```
+
