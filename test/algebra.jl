@@ -42,5 +42,4 @@
                         0.0  0.5 0.75])
 
     @test ps / c == ps_div_c
-
 end
