@@ -34,7 +34,11 @@ Base.eltype(p::PolySet) = eltype(p.coeffs)
 
 # Indexing
 Base.getindex(p::PolySet, i::Int, j::Int) = p.coeffs[i, j]
+Base.getindex(p::PolySet, I::UnitRange, j::Int) = p.coeffs[I, j]
+Base.getindex(p::PolySet, i::Int, J::UnitRange) = p.coeffs[i, J]
+Base.getindex(p::PolySet, I::UnitRange, J::UnitRange) = p.coeffs[I, J]
 Base.getindex(p::PolySet, i::Int) = p.coeffs[i, :]
+Base.getindex(p::PolySet, I::UnitRange) = p.coeffs[I, :]
 Base.setindex!(p::PolySet, v, i::Int, j::Int) = (p.coeffs[i, j] = v)
 Base.setindex!(p::PolySet, v::AbstractVector, i::Int) = (p.coeffs[i, :] = v)
 Base.first(ps::PolySet) = ps[1, :]
@@ -65,7 +69,7 @@ Base.similar(p::PolySet, dims::Dims) = PolySet(similar(p.coeffs, dims))
 Base.similar(p::PolySet, ::Type{T}, dims::Dims) where T = PolySet(similar(p.coeffs, T, dims))
 
 Base.zeros(::Type{PolySet{T}}, dims::Dims) where {T} = PolySet(zeros(T, dims))
-Base.zeros(p::PolySet) = PolySet(zeros(eltype(p), size(p)))
+Base.zero(p::PolySet) = PolySet(zeros(eltype(p), size(p)))
 
 # Convert and promote
 Base.convert(::Type{PolySet{T}}, A::AbstractMatrix{T}) where {T} = PolySet{T, typeof(A)}(A)

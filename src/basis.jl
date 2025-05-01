@@ -14,7 +14,7 @@ Each row `i` of the returned matrix corresponds to the monomial `x^i`.
 A square identity matrix of size `n × n`, interpreted as a basis for degree `< n` monomials.
 """
 function Monomials(n::Int, ::Type{T}) where {T}
-    Matrix{T}(I,n,n)
+    PolySet(Matrix{T}(I,n,n))
 end
 
 Monomials(n::Int) = Monomials(n, Float64)

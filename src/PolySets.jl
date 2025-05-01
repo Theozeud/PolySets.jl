@@ -6,7 +6,7 @@ module PolySets
     using Plots
 
     export  PolySet, 
-            allocate_PolysSet, npolys, maxdeg,
+            allocate_PolySet, npolys, maxdeg,
             evaluate, evaluate!,
             integrate, integrate!,
             derivate, derivate!
