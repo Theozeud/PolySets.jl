@@ -2,7 +2,7 @@
 @testset "Tests for integrate" begin
     
     # PolySet of p(x) = 1, x, 2x + 3x²
-    ps = PolysSet([ 1.0 0.0 0.0;
+    ps = PolySet([ 1.0 0.0 0.0;
                     0.0 1.0 0.0;
                     0.0 2.0 3.0])
 
@@ -12,7 +12,7 @@
     @test y == [1.0, 0.5, 2.0]
 
     # Antiderivative of ps which cancells at 0.0
-    trueips = PolysSet([0.0 1.0 0.0 0.0;
+    trueips = PolySet([0.0 1.0 0.0 0.0;
                         0.0 0.0 0.5 0.0;
                         0.0 0.0 1.0 1.0])
 

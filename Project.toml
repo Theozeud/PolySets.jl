@@ -1,7 +1,7 @@
 name = "PolySets"
 uuid = "ebb14b32-f2e0-4d83-93bc-77fe330ff378"
 authors = ["Théo Duez", "CNRS"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
