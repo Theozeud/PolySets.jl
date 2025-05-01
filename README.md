@@ -29,26 +29,22 @@ This structure is particularly well-suited for numerical applications where many
 
 
 ## How to use `PolySet`
-
 Here's a quick example showing how to create a set of 1000 polynomials of degree 999 and evaluate them on 1000 points:
 
+## Perfomance
+We finish by showing the performance of this implementations :
+
 ```julia
-using YourPolyPackage  # Replace with the actual package name
-using BenchmarkTools
-using Plots
+julia> using PolySets, BenchmarkTools
 
-# Generate a PolySet of size 1000 × 1000 (1000 polynomials of degree 999)
-n_polys = 1000
-degree = 999
-ps = PolySet(randn(n_polys, degree + 1))  # Random coefficients
+julia> ps = PolySet(randn(1000, 1000));
 
-# Generate 1000 evaluation points in [-1, 1]
-x = range(-1.0, 1.0; length=n_polys)
+julia> x = range(-1.0, 1.0; length=1000);
 
-# Evaluate all polynomials at all points (vectorized broadcasting)
-@btime y = ps.(x)  # Returns a (1000, 1000) matrix
+julia> y = zeros(1000,1000)
 
-# Plot a few polynomials
-plot(x, ps[1:5].(x)', legend=false, title="First 5 polynomials")
+julia> @btime @btime evaluate!(y, ps, x);
+  172.282 ms (0 allocations: 0 bytes);
 ```
+
 
