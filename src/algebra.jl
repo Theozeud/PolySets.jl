@@ -33,7 +33,7 @@ function Base.:/(ps::PolySet{TP}, c::TC) where {TP,TC<:Number}
 end
 
 Base.:+(c::TC, ps::PolySet{TP}) where {TP, TC<:Number} = ps+c
-Base.:-(c::TC, ps::PolySet{TP}) where {TP, TC<:Number} = ps+c
+Base.:-(c::TC, ps::PolySet{TP}) where {TP, TC<:Number} = (-ps) + c
 Base.:*(c::TC, ps::PolySet{TP}) where {TP, TC<:Number} = ps*c
 
 
