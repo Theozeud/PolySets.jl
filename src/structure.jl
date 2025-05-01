@@ -33,10 +33,16 @@ end
 Base.eltype(p::PolySet) = eltype(p.coeffs)
 
 # Indexing
+Base.getindex(p::PolySet, ::Colon, ::Colon) = p.coeffs[:, :]
+Base.getindex(p::PolySet, i::Int, ::Colon) = p.coeffs[i, :]
+Base.getindex(p::PolySet, I::UnitRange, ::Colon) = p.coeffs[I, :]
+Base.getindex(p::PolySet, ::Colon, j::Int) = p.coeffs[:, j]
+Base.getindex(p::PolySet, ::Colon, J::UnitRange) = p.coeffs[:, J]
 Base.getindex(p::PolySet, i::Int, j::Int) = p.coeffs[i, j]
 Base.getindex(p::PolySet, I::UnitRange, j::Int) = p.coeffs[I, j]
 Base.getindex(p::PolySet, i::Int, J::UnitRange) = p.coeffs[i, J]
 Base.getindex(p::PolySet, I::UnitRange, J::UnitRange) = p.coeffs[I, J]
+Base.getindex(p::PolySet, ::Colon) = p.coeffs[:, :]
 Base.getindex(p::PolySet, i::Int) = p.coeffs[i, :]
 Base.getindex(p::PolySet, I::UnitRange) = p.coeffs[I, :]
 Base.setindex!(p::PolySet, v, i::Int, j::Int) = (p.coeffs[i, j] = v)
@@ -46,11 +52,12 @@ Base.last(ps::PolySet) = ps[end, :]
 Base.firstindex(ps::PolySet) = firstindex(ps.coeffs)
 Base.lastindex(ps::PolySet) = lastindex(ps.coeffs)
 
-
 # Size
 Base.size(p::PolySet) = size(p.coeffs)
 Base.size(p::PolySet, dim::Int) = size(p.coeffs, dim)
 Base.length(ps::PolySet) = size(ps, 1)
+Base.axes(ps::PolySet) = axes(ps.coeffs)
+Base.axes(ps::PolySet, n::Int) = axes(ps.coeffs, n)
 npolys(ps::PolySet) = size(ps.coeffs, 1)
 maxdeg(ps::PolySet) = size(ps.coeffs, 2) - 1
 
