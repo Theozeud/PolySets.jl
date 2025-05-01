@@ -43,7 +43,7 @@ julia> x = range(-1.0, 1.0; length=1000);
 
 julia> y = zeros(1000,1000)
 
-julia> @btime @btime evaluate!(y, ps, x);
+julia> @btime evaluate!(y, ps, x);
   172.282 ms (0 allocations: 0 bytes);
 ```
 
